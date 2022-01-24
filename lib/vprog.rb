@@ -135,7 +135,7 @@ class MobProg
         if @fun_prog_to.empty?
           warn(prog[:line_num], prog[:line], "No matching function for condition in ##{vnum}'s #{prog[:src_trig]} trigger")
           next
-        elsif 
+        elsif
           @fun_prog_to[prog[:target]].nil?
           warn(prog[:line_num], prog[:line], "No matching function for condition in from ##{vnum}'s #{prog[:src_trig]} trigger")
           next
@@ -822,8 +822,9 @@ class MobProg
       if m = condition.match(/^#(\d+)$/)
         # Create a new connection with the matched vnum as the target
         # Type of connection is fun_condition
-        param = value.split[1]
-        connection = Connection.new(current_line, m[1].to_i, :FC, type, param, line)
+        trigger_name, param = value.split
+        trigger_name = trigger_name.upcase.to_sym
+        connection = Connection.new(current_line, m[1].to_i, trigger_name, type, param, line)
         if @flags.include? :debug
           puts "Found connection: #{line}"
           puts "To vnum #{connection[:target]} as a #{connection[:type]} with param #{connection[:parameter]}"
