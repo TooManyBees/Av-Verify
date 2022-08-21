@@ -50,6 +50,16 @@ OPERATORS = %w{ = != < > }
 # Valid flags for actions
 AFLAGS = "PQL" # Project: Quantum Leap! :D
 
+# Valid value types in a "V #-type" line
+VALUES = %w{
+	percent range in_room
+	ptext pcoins
+	qvar qvar_i
+	pvar pvar_i
+	enum enum_i
+	array array_i
+	}
+
 # The max values for various conditions
 SUNLIGHT_MAX = 3
 SKY_MAX = 3

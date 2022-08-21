@@ -686,6 +686,18 @@ class MobProg
         err(current_line, line, "Missing trigger type, expected 'T <xx>'")
         return false
       end
+    when :v
+      prefix, t, rest = line.split(" ", 3)
+      value_num, value_type = t.split("-", 2)
+      err(current_line, line, "Invalid value number: #{value_num}") unless value_num =~ /\d/
+      err(current_line, line, "Invalid value type: #{value_type}") unless VALUES.include?(value_type)
+      if line.count("~") == 1 && !line.end_with?("~")
+        warn(current_line, line, "Value line continues after terminating ~")
+      elsif line.count("~") > 1
+        warn(current_line, line, "Value line has too many ~")
+      else
+        err(current_line ,line, "Value line lacks ~")
+      end
     when :a
       if line.count("~") == 1
           warn(current_line, line, "Action line continues after terminating ~") unless line.end_with?("~")
