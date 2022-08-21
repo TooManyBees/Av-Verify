@@ -802,7 +802,7 @@ class MobProg
     # Unlike unknown trigger names, bad conditions will cause errors
 
     # First, check for good conditions
-    if condition.start_with?("#") || condition.start_with?("qvar") || condition.start_with?("wear_") || C_ALL.include?(condition)
+    if condition.start_with?("#") || condition.start_with?("qvar") || condition.start_with?("pvar") || condition.start_with?("wear_") || C_ALL.include?(condition)
 
     elsif C_DEPRECATED.include?(condition) || condition.start_with?("qstate")
       dep(current_line, line, "Deprecated quest tracking condition")
@@ -847,7 +847,7 @@ class MobProg
       end
     elsif !condition.start_with?("qstate")
       err(current_line, line, "Invalid operator in condition check") unless OPERATORS.include?(operator)
-    elsif condition == "qvar"
+    elsif condition == "qvar" || condition == "pvar"
       # Without a value tacked onto 'qvar' the only valid operators are = and !=
       err(current_line, line, "Wrong operator used for qvar comparison") unless ["=", "!="].include?(operator)
     else
@@ -856,7 +856,7 @@ class MobProg
     end
 
     # Now check the value. And in the case of qvar-val, the token attached to qvar as well
-    if condition.start_with?("qvar-")
+    if condition.start_with?("qvar-") || condition.start_with?("pvar-")
       # Split the condition up by hyphens.
       conditions = condition.split("-", 2)
       # Do the same for ####-variablename. In this case, the value HAS to have something
@@ -879,7 +879,7 @@ class MobProg
         end
       end
 
-    elsif condition == "qvar"
+    elsif condition == "qvar" || condition == "pvar"
       # Split the value up by hyphens. A valid value will either be a single number and not be split up,
       # or a single number and an alphanumeric word separated by a single hyphen
       vars = value.split("-", 2)
